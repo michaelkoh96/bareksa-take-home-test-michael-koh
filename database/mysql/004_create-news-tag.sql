@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS news_tag (
+	id INT NOT NULL AUTO_INCREMENT,
+	`news_serial` CHAR(20) NOT NULL,
+	`tag_name` CHAR(20) NOT NULL,
+	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
+	deleted_at TIMESTAMP NULL,
+	CONSTRAINT news_pk PRIMARY KEY (id),
+	FOREIGN KEY (`news_serial`) REFERENCES `news`(serial) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (`tag_name`) REFERENCES `tag`(name) ON UPDATE CASCADE ON DELETE CASCADE,
+	UNIQUE KEY `idx_news_tag_serial_unique` (`news_serial` , `tag_name`) USING BTREE
+)
+
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8
+COLLATE=utf8_general_ci;
