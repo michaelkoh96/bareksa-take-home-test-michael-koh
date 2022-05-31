@@ -3,9 +3,11 @@ package main
 import (
 	"bareksa-take-home-test-michael-koh/config"
 	serviceNews "bareksa-take-home-test-michael-koh/core/service/news"
+	serviceTag "bareksa-take-home-test-michael-koh/core/service/tag"
 	serviceTopic "bareksa-take-home-test-michael-koh/core/service/topic"
 	"bareksa-take-home-test-michael-koh/handler"
 	repoNews "bareksa-take-home-test-michael-koh/repository/news"
+	repoTag "bareksa-take-home-test-michael-koh/repository/tag"
 	repoTopic "bareksa-take-home-test-michael-koh/repository/topic"
 	"fmt"
 	"log"
@@ -33,27 +35,34 @@ func main() {
 	// init repo
 	newsRepo := repoNews.NewRepository(db)
 	topicRepo := repoTopic.NewRepository(db)
+	tagRepo := repoTag.NewRepository(db)
 
 	// init service
 	newsService := serviceNews.NewService(newsRepo)
 	topicService := serviceTopic.NewService(topicRepo)
+	tagService := serviceTag.NewService(tagRepo)
 
 	// init handler
-	bareksaNewsHandler := handler.NewBareksaNewsHandler(newsService, topicService)
+	bareksaNewsHandler := handler.NewBareksaNewsHandler(newsService, topicService, tagService)
 
 	// setup server and register route
 	route := mux.NewRouter()
 	route.HandleFunc("/", bareksaNewsHandler.GetNewsHandler)
+
+	// News Handler
 	route.HandleFunc("/news", bareksaNewsHandler.GetNewsHandler).
 		Queries("status", "{status}").
 		Queries("topicSerials", "{topicSerials}").
 		Methods("GET")
-
 	route.HandleFunc("/news", bareksaNewsHandler.CreateNewsHandler).
 		Methods("POST")
 	route.HandleFunc("/news", bareksaNewsHandler.UpdateNewsHandler).
 		Methods("PATCH")
 	route.HandleFunc("/news/{newsSerial}", bareksaNewsHandler.DeleteNewsHandler).
+		Methods("DELETE")
+
+	// tags handler
+	route.HandleFunc("/tags/{tagName}", bareksaNewsHandler.DeleteTagsHandler).
 		Methods("DELETE")
 
 	http.Handle("/", route)
