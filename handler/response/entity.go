@@ -20,4 +20,8 @@ type (
 		Description string   `json:"description"`
 		Tags        []string `json:"tag"`
 	}
+
+	Tag struct {
+		Name string `json:"name"`
+	}
 )

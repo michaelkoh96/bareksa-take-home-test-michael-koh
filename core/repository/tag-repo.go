@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"bareksa-take-home-test-michael-koh/core/entity"
 	"errors"
 )
 
@@ -14,5 +15,6 @@ type (
 		// CreateNews(news entity.News) error
 		// UpdateNews(news entity.News) error
 		DeleteTag(tagName string) error
+		GetTags(page, size int) ([]entity.Tag, error)
 	}
 )

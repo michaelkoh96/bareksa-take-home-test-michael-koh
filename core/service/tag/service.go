@@ -1,26 +1,32 @@
 package tag
 
 import (
+	"bareksa-take-home-test-michael-koh/core/entity"
 	"bareksa-take-home-test-michael-koh/core/repository"
 	"context"
 )
 
 type (
-	NewsService interface {
+	TagsService interface {
+		GetTags(ctx context.Context, page, size int) ([]entity.Tag, error)
 		DeleteTag(ctx context.Context, tagName string) error
 	}
 
-	newsService struct {
+	tagService struct {
 		repo repository.TagRepository
 	}
 )
 
-func NewService(repo repository.TagRepository) NewsService {
-	return &newsService{
+func NewService(repo repository.TagRepository) TagsService {
+	return &tagService{
 		repo: repo,
 	}
 }
 
-func (s *newsService) DeleteTag(ctx context.Context, tagName string) error {
+func (s *tagService) DeleteTag(ctx context.Context, tagName string) error {
 	return s.repo.DeleteTag(tagName)
+}
+
+func (s *tagService) GetTags(ctx context.Context, page, size int) ([]entity.Tag, error) {
+	return s.repo.GetTags(page, size)
 }

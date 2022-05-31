@@ -33,6 +33,21 @@ func MapGetNewsResponse(news []entity.News, topics []entity.Topic) GeneralRespon
 	}
 }
 
+func MapGetTagResponse(tags []entity.Tag) GeneralResponse {
+	tagsResp := make([]Tag, 0)
+
+	for _, i := range tags {
+		tagsResp = append(tagsResp, Tag{
+			Name: i.Name,
+		})
+	}
+
+	return GeneralResponse{
+		Data:    tagsResp,
+		Message: "success",
+	}
+}
+
 func CreatedNewsResponse() GeneralResponse {
 	return GeneralResponse{
 		Data:    nil,
