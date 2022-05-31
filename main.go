@@ -51,6 +51,8 @@ func main() {
 
 	route.HandleFunc("/news", bareksaNewsHandler.CreateNewsHandler).
 		Methods("POST")
+	route.HandleFunc("/news", bareksaNewsHandler.UpdateNewsHandler).
+		Methods("PATCH")
 
 	http.Handle("/", route)
 

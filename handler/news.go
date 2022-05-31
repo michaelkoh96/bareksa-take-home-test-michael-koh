@@ -84,3 +84,24 @@ func (h *handler) CreateNewsHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusCreated)
 }
+
+func (h *handler) UpdateNewsHandler(w http.ResponseWriter, r *http.Request) {
+	var newNews entity.News
+
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&newNews)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = h.newsService.UpdateNews(context.Background(), newNews)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+}

@@ -15,5 +15,6 @@ type (
 	NewsRepository interface {
 		GetNewsByQuery(query entity.GetNewsQuery) ([]entity.News, error)
 		CreateNews(news entity.News) error
+		UpdateNews(news entity.News) error
 	}
 )

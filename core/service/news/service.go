@@ -9,7 +9,8 @@ import (
 type (
 	NewsService interface {
 		GetNews(ctx context.Context, newsQuery entity.GetNewsQuery) ([]entity.News, error)
-		CreateNews(ctx context.Context, newsQuery entity.News) error
+		CreateNews(ctx context.Context, newNews entity.News) error
+		UpdateNews(ctx context.Context, newNews entity.News) error
 	}
 
 	newsService struct {
@@ -34,4 +35,8 @@ func (s *newsService) GetNews(ctx context.Context, newsQuery entity.GetNewsQuery
 
 func (s *newsService) CreateNews(ctx context.Context, newNews entity.News) error {
 	return s.repo.CreateNews(newNews)
+}
+
+func (s *newsService) UpdateNews(ctx context.Context, newNews entity.News) error {
+	return s.repo.UpdateNews(newNews)
 }

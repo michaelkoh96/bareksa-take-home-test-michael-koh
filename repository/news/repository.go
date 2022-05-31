@@ -16,6 +16,27 @@ func NewRepository(db *gorm.DB) repo.NewsRepository {
 	return &repository{db}
 }
 
+func (r *repository) UpdateNewsRepo(news News, tags []string) error {
+	tx := r.db.Begin()
+
+	err := tx.Table(NewsTableName).Where("serial = ?", news.Serial).Updates(map[string]interface{}{
+		"topic_serial": news.TopicSerial,
+		"status":       news.Status,
+		"title":        news.Title,
+		"author_name":  news.AuthorName,
+		"description":  news.Description,
+	}).Error
+	if err != nil {
+		tx.Rollback()
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return repo.ErrNewsNotFound
+		}
+		return err
+	}
+
+	return tx.Commit().Error
+}
+
 func (r *repository) CreateNewsRepo(news News, tags []string) error {
 	tx := r.db.Begin()
 
