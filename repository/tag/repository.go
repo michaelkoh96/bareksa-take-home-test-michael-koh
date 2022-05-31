@@ -33,3 +33,13 @@ func (r *repository) GetTagsRepo(page, size int) ([]Tag, error) {
 func (r *repository) DeleteTagRepo(tagName string) error {
 	return r.db.Table(TagTableName).Where("name = ?", tagName).Delete(&Tag{}).Error
 }
+
+func (r *repository) CreateTagRepo(tagName string) error {
+	return r.db.Table(TagTableName).Create(&Tag{
+		Name: tagName,
+	}).Error
+}
+
+func (r *repository) UpdateTagRepo(tagName, newTagName string) error {
+	return r.db.Table(TagTableName).Where("name = ?", tagName).Update("name", newTagName).Error
+}

@@ -66,6 +66,10 @@ func main() {
 		Queries("page", "{page}").
 		Queries("size", "{size}").
 		Methods("GET")
+	route.HandleFunc("/tags", bareksaNewsHandler.CreateTagsHandler).
+		Methods("POST")
+	route.HandleFunc("/tags/{tagName}", bareksaNewsHandler.UpdateTagsHandler).
+		Methods("PUT")
 	route.HandleFunc("/tags/{tagName}", bareksaNewsHandler.DeleteTagsHandler).
 		Methods("DELETE")
 

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"bareksa-take-home-test-michael-koh/core/entity"
 	"bareksa-take-home-test-michael-koh/handler/response"
 	"context"
 	"encoding/json"
@@ -59,6 +60,52 @@ func (h *handler) DeleteTagsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err := h.tagService.DeleteTag(context.Background(), tagName)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+func (h *handler) CreateTagsHandler(w http.ResponseWriter, r *http.Request) {
+	var tag entity.Tag
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&tag)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = h.tagService.CreateTags(context.Background(), tag.Name)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+}
+
+func (h *handler) UpdateTagsHandler(w http.ResponseWriter, r *http.Request) {
+	tagName := strings.TrimSpace(mux.Vars(r)["tagName"])
+	if len(tagName) == 0 {
+		http.Error(w, "Invalid tag name", http.StatusBadRequest)
+		return
+	}
+
+	var tag entity.Tag
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&tag)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = h.tagService.UpdateTags(context.Background(), tagName, tag.Name)
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -15,6 +15,8 @@ type (
 		// CreateNews(news entity.News) error
 		// UpdateNews(news entity.News) error
 		DeleteTag(tagName string) error
+		CreateTag(tagName string) error
+		UpdateTag(tagName, newTagName string) error
 		GetTags(page, size int) ([]entity.Tag, error)
 	}
 )

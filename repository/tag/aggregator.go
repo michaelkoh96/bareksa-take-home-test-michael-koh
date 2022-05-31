@@ -21,3 +21,11 @@ func (r *repository) GetTags(page, size int) ([]entity.Tag, error) {
 
 	return resTag, nil
 }
+
+func (r *repository) CreateTag(tagName string) error {
+	return r.CreateTagRepo(tagName)
+}
+
+func (r *repository) UpdateTag(tagName, newTagName string) error {
+	return r.UpdateTagRepo(tagName, newTagName)
+}

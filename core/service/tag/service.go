@@ -9,6 +9,8 @@ import (
 type (
 	TagsService interface {
 		GetTags(ctx context.Context, page, size int) ([]entity.Tag, error)
+		CreateTags(ctx context.Context, tagName string) error
+		UpdateTags(ctx context.Context, tagName, newTagName string) error
 		DeleteTag(ctx context.Context, tagName string) error
 	}
 
@@ -29,4 +31,12 @@ func (s *tagService) DeleteTag(ctx context.Context, tagName string) error {
 
 func (s *tagService) GetTags(ctx context.Context, page, size int) ([]entity.Tag, error) {
 	return s.repo.GetTags(page, size)
+}
+
+func (s *tagService) CreateTags(ctx context.Context, tagName string) error {
+	return s.repo.CreateTag(tagName)
+}
+
+func (s *tagService) UpdateTags(ctx context.Context, tagName, newTagName string) error {
+	return s.repo.UpdateTag(tagName, newTagName)
 }

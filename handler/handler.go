@@ -17,6 +17,8 @@ type (
 
 		// Tag
 		GetTagsHandler(w http.ResponseWriter, r *http.Request)
+		CreateTagsHandler(w http.ResponseWriter, r *http.Request)
+		UpdateTagsHandler(w http.ResponseWriter, r *http.Request)
 		DeleteTagsHandler(w http.ResponseWriter, r *http.Request)
 	}
 
