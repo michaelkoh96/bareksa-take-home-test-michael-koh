@@ -4,6 +4,7 @@ import (
 	repo "bareksa-take-home-test-michael-koh/core/repository"
 	"errors"
 	"log"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -16,6 +17,10 @@ func NewRepository(db *gorm.DB) repo.NewsRepository {
 	return &repository{db}
 }
 
+var (
+	StatusDeleted = "deleted"
+)
+
 func (r *repository) UpdateNewsRepo(news News, tags []string) error {
 	tx := r.db.Begin()
 
@@ -25,6 +30,24 @@ func (r *repository) UpdateNewsRepo(news News, tags []string) error {
 		"title":        news.Title,
 		"author_name":  news.AuthorName,
 		"description":  news.Description,
+	}).Error
+	if err != nil {
+		tx.Rollback()
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return repo.ErrNewsNotFound
+		}
+		return err
+	}
+
+	return tx.Commit().Error
+}
+
+// Soft Delete
+func (r *repository) DeleteNewsRepo(newsSerial string) error {
+	tx := r.db.Begin()
+	err := tx.Table(NewsTableName).Where("serial = ?", newsSerial).Updates(map[string]interface{}{
+		"deleted_at": time.Now(),
+		"status":     StatusDeleted,
 	}).Error
 	if err != nil {
 		tx.Rollback()

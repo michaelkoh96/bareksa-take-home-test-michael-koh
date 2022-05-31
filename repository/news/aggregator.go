@@ -57,3 +57,7 @@ func (r *repository) UpdateNews(news entity.News) error {
 		Description: news.Description,
 	}, news.Tags)
 }
+
+func (r *repository) DeleteNews(newsSerial string) error {
+	return r.DeleteNewsRepo(newsSerial)
+}

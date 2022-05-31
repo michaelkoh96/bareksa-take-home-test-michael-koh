@@ -39,10 +39,3 @@ func CreatedNewsResponse() GeneralResponse {
 		Message: "success",
 	}
 }
-
-// func MapErrorResponse(err error) GeneralResponse {
-// 	return GeneralResponse{
-// 		Data:    nil,
-// 		Message: err.Error(),
-// 	}
-// }

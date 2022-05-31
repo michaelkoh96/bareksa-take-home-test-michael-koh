@@ -103,5 +103,22 @@ func (h *handler) UpdateNewsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusOK)
+}
+
+func (h *handler) DeleteNewsHandler(w http.ResponseWriter, r *http.Request) {
+	newsSerial := strings.TrimSpace(mux.Vars(r)["newsSerial"])
+	if len(newsSerial) < 4 {
+		http.Error(w, "Invalid news serial", http.StatusBadRequest)
+		return
+	}
+
+	err := h.newsService.DeleteNews(context.Background(), newsSerial)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }

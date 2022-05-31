@@ -11,6 +11,7 @@ type (
 		GetNews(ctx context.Context, newsQuery entity.GetNewsQuery) ([]entity.News, error)
 		CreateNews(ctx context.Context, newNews entity.News) error
 		UpdateNews(ctx context.Context, newNews entity.News) error
+		DeleteNews(ctx context.Context, newsSerial string) error
 	}
 
 	newsService struct {
@@ -39,4 +40,8 @@ func (s *newsService) CreateNews(ctx context.Context, newNews entity.News) error
 
 func (s *newsService) UpdateNews(ctx context.Context, newNews entity.News) error {
 	return s.repo.UpdateNews(newNews)
+}
+
+func (s *newsService) DeleteNews(ctx context.Context, newsSerial string) error {
+	return s.repo.DeleteNews(newsSerial)
 }

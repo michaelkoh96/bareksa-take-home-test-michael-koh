@@ -16,5 +16,6 @@ type (
 		GetNewsByQuery(query entity.GetNewsQuery) ([]entity.News, error)
 		CreateNews(news entity.News) error
 		UpdateNews(news entity.News) error
+		DeleteNews(newsSerial string) error
 	}
 )

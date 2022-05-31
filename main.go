@@ -53,6 +53,8 @@ func main() {
 		Methods("POST")
 	route.HandleFunc("/news", bareksaNewsHandler.UpdateNewsHandler).
 		Methods("PATCH")
+	route.HandleFunc("/news/{newsSerial}", bareksaNewsHandler.DeleteNewsHandler).
+		Methods("DELETE")
 
 	http.Handle("/", route)
 
