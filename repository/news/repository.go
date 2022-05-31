@@ -78,6 +78,8 @@ func (r *repository) GetNewsByQueryRepo(status string, topicSerials []string) ([
 		query.Where("topic_serial IN (?)", topicSerials)
 	}
 
+	query.Where("deleted_at is NULL AND status != 'deleted'")
+
 	err := query.Find(&news).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
