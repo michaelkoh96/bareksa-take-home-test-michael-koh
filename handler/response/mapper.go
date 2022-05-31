@@ -4,8 +4,14 @@ import (
 	"bareksa-take-home-test-michael-koh/core/entity"
 )
 
-func MapGetNewsResponse(news []entity.News) GeneralResponse {
+func MapGetNewsResponse(news []entity.News, topics []entity.Topic) GeneralResponse {
 	newsResp := make([]News, 0)
+	topicMap := make(map[string]string)
+
+	for _, i := range topics {
+		topicMap[i.Serial] = i.Title
+	}
+
 	for _, n := range news {
 		newsResp = append(newsResp, News{
 			Serial:      n.Serial,
@@ -14,6 +20,10 @@ func MapGetNewsResponse(news []entity.News) GeneralResponse {
 			Description: n.Description,
 			Title:       n.Title,
 			Tags:        n.Tags,
+			Topic: Topic{
+				Serial: n.TopicSerial,
+				Title:  topicMap[n.TopicSerial],
+			},
 		})
 	}
 
@@ -23,9 +33,9 @@ func MapGetNewsResponse(news []entity.News) GeneralResponse {
 	}
 }
 
-func MapErrorResponse(err error) GeneralResponse {
-	return GeneralResponse{
-		Data:    nil,
-		Message: err.Error(),
-	}
-}
+// func MapErrorResponse(err error) GeneralResponse {
+// 	return GeneralResponse{
+// 		Data:    nil,
+// 		Message: err.Error(),
+// 	}
+// }

@@ -28,6 +28,18 @@ func (h *handler) GetNewsHandler(w http.ResponseWriter, r *http.Request) {
 		topicSerialsArr = strings.Split(topicSerials, ",")
 	}
 
+	// Get Topics
+	var topics []entity.Topic
+	var err error
+	if len(topicSerialsArr) > 0 {
+		topics, err = h.topicService.GetTopicsBySerials(context.Background(), topicSerialsArr)
+		if err != nil {
+			log.Println(err.Error())
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
 	// Get News
 	result, err := h.newsService.GetNews(context.Background(), entity.GetNewsQuery{
 		Status:       status,
@@ -35,10 +47,11 @@ func (h *handler) GetNewsHandler(w http.ResponseWriter, r *http.Request) {
 	})
 	if err != nil {
 		log.Println(err.Error())
-		resp = response.MapErrorResponse(err)
-	} else {
-		resp = response.MapGetNewsResponse(result)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
+
+	resp = response.MapGetNewsResponse(result, topics)
 
 	// Marshal response
 	payload, err := json.Marshal(resp)

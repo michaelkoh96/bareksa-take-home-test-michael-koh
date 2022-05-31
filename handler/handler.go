@@ -2,6 +2,7 @@ package handler
 
 import (
 	newsService "bareksa-take-home-test-michael-koh/core/service/news"
+	topicService "bareksa-take-home-test-michael-koh/core/service/topic"
 	"net/http"
 )
 
@@ -11,12 +12,14 @@ type (
 	}
 
 	handler struct {
-		newsService newsService.NewsService
+		newsService  newsService.NewsService
+		topicService topicService.TopicService
 	}
 )
 
-func NewBareksaNewsHandler(newsService newsService.NewsService) Handler {
+func NewBareksaNewsHandler(newsService newsService.NewsService, topicService topicService.TopicService) Handler {
 	return &handler{
-		newsService: newsService,
+		newsService:  newsService,
+		topicService: topicService,
 	}
 }
