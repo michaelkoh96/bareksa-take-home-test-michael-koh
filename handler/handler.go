@@ -9,6 +9,7 @@ import (
 type (
 	Handler interface {
 		GetNewsHandler(w http.ResponseWriter, r *http.Request)
+		CreateNewsHandler(w http.ResponseWriter, r *http.Request)
 	}
 
 	handler struct {

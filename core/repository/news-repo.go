@@ -6,11 +6,14 @@ import (
 )
 
 var (
-	ErrNewsNotFound = errors.New("error, news not found")
+	ErrNewsNotFound           = errors.New("error, news not found")
+	ErrCreateNewsInvalidTopic = errors.New("error while creating news, invalid topic")
+	ErrCreateNewsInvalidTag   = errors.New("error while creating news, invalid tag")
 )
 
 type (
 	NewsRepository interface {
 		GetNewsByQuery(query entity.GetNewsQuery) ([]entity.News, error)
+		CreateNews(news entity.News) error
 	}
 )

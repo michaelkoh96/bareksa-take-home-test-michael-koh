@@ -33,6 +33,13 @@ func MapGetNewsResponse(news []entity.News, topics []entity.Topic) GeneralRespon
 	}
 }
 
+func CreatedNewsResponse() GeneralResponse {
+	return GeneralResponse{
+		Data:    nil,
+		Message: "success",
+	}
+}
+
 // func MapErrorResponse(err error) GeneralResponse {
 // 	return GeneralResponse{
 // 		Data:    nil,

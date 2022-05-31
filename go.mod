@@ -3,6 +3,7 @@ module bareksa-take-home-test-michael-koh
 go 1.16
 
 require (
+	github.com/gomodule/redigo v1.8.8 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/kelseyhightower/envconfig v1.4.0 // indirect

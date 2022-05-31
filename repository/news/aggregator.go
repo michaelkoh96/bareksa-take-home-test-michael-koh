@@ -2,6 +2,7 @@ package news
 
 import (
 	"bareksa-take-home-test-michael-koh/core/entity"
+	"log"
 )
 
 func (r *repository) GetNewsByQuery(query entity.GetNewsQuery) ([]entity.News, error) {
@@ -34,4 +35,16 @@ func (r *repository) GetNewsByQuery(query entity.GetNewsQuery) ([]entity.News, e
 	}
 
 	return newsRes, nil
+}
+
+func (r *repository) CreateNews(news entity.News) error {
+	log.Println("4")
+	return r.CreateNewsRepo(News{
+		Serial:      news.Serial,
+		TopicSerial: news.TopicSerial,
+		AuthorName:  news.AuthorName,
+		Status:      news.Status,
+		Title:       news.Title,
+		Description: news.Description,
+	}, news.Tags)
 }

@@ -3,6 +3,7 @@ package news
 import (
 	repo "bareksa-take-home-test-michael-koh/core/repository"
 	"errors"
+	"log"
 
 	"gorm.io/gorm"
 )
@@ -13,6 +14,31 @@ type repository struct {
 
 func NewRepository(db *gorm.DB) repo.NewsRepository {
 	return &repository{db}
+}
+
+func (r *repository) CreateNewsRepo(news News, tags []string) error {
+	tx := r.db.Begin()
+
+	err := tx.Create(&news).Error
+	if err != nil {
+		tx.Rollback()
+		log.Println(err.Error())
+		return err
+	}
+
+	for _, t := range tags {
+		err = tx.Table(NewsTagTableName).Create(&NewsTag{
+			NewsSerial: news.Serial,
+			TagName:    t,
+		}).Error
+		if err != nil {
+			tx.Rollback()
+			log.Println(err.Error())
+			return err
+		}
+	}
+
+	return tx.Commit().Error
 }
 
 func (r *repository) GetTagsByNewsSerialsRepo(newsSerials []string) (map[string][]string, error) {

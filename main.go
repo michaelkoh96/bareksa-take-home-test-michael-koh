@@ -2,9 +2,11 @@ package main
 
 import (
 	"bareksa-take-home-test-michael-koh/config"
-	newsService "bareksa-take-home-test-michael-koh/core/service/news"
+	serviceNews "bareksa-take-home-test-michael-koh/core/service/news"
+	serviceTopic "bareksa-take-home-test-michael-koh/core/service/topic"
 	"bareksa-take-home-test-michael-koh/handler"
 	repoNews "bareksa-take-home-test-michael-koh/repository/news"
+	repoTopic "bareksa-take-home-test-michael-koh/repository/topic"
 	"fmt"
 	"log"
 	"net/http"
@@ -30,12 +32,14 @@ func main() {
 
 	// init repo
 	newsRepo := repoNews.NewRepository(db)
+	topicRepo := repoTopic.NewRepository(db)
 
 	// init service
-	newsService := newsService.NewService(newsRepo)
+	newsService := serviceNews.NewService(newsRepo)
+	topicService := serviceTopic.NewService(topicRepo)
 
 	// init handler
-	bareksaNewsHandler := handler.NewBareksaNewsHandler(newsService)
+	bareksaNewsHandler := handler.NewBareksaNewsHandler(newsService, topicService)
 
 	// setup server and register route
 	route := mux.NewRouter()
@@ -44,6 +48,9 @@ func main() {
 		Queries("status", "{status}").
 		Queries("topicSerials", "{topicSerials}").
 		Methods("GET")
+
+	route.HandleFunc("/news", bareksaNewsHandler.CreateNewsHandler).
+		Methods("POST")
 
 	http.Handle("/", route)
 

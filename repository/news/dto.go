@@ -1,7 +1,5 @@
 package news
 
-import "time"
-
 type (
 	News struct {
 		ID          int
@@ -11,18 +9,12 @@ type (
 		Title       string
 		AuthorName  string
 		Description string
-		CreatedAt   time.Time
-		UpdatedAt   time.Time
-		DeletedAt   time.Time
 	}
 
 	NewsTag struct {
 		ID         int
 		NewsSerial string
 		TagName    string
-		CreatedAt  time.Time
-		UpdatedAt  time.Time
-		DeletedAt  time.Time
 	}
 )
 
