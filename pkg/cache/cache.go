@@ -39,7 +39,7 @@ func (c *cacheHelper) UnsetCache(ctx context.Context, key string) error {
 
 	_, err := conn.Do("DEL", key)
 	if err != nil {
-		log.Printf("[CACHE-ERROR] unable to invalidate cache %s : %s", key, err.Error())
+		log.Printf("[CACHE-ERROR] unable to invalidate cache %s : %s\n", key, err.Error())
 	}
 
 	return err
@@ -72,7 +72,7 @@ func (c *cacheHelper) Set(key string, data []byte, ttl int) error {
 func (c *cacheHelper) GetAndUnmarshal(key string, v interface{}) (exists bool, err error) {
 	cachedBytes, err := c.Get(key)
 	if err != nil {
-		log.Printf("[CACHE-ERROR] unable to retrieving cache %s : %s", key, err.Error())
+		log.Printf("[CACHE-ERROR] unable to retrieving cache %s : %s\n", key, err.Error())
 	} else {
 		if cachedBytes == nil {
 			return false, nil
@@ -83,7 +83,7 @@ func (c *cacheHelper) GetAndUnmarshal(key string, v interface{}) (exists bool, e
 			return true, nil
 		}
 
-		log.Printf("[CACHE-ERROR] unable to retrieving cache %s : %s", key, err.Error())
+		log.Printf("[CACHE-ERROR] unable to retrieving cache %s : %s\n", key, err.Error())
 	}
 
 	return false, err
@@ -92,11 +92,11 @@ func (c *cacheHelper) GetAndUnmarshal(key string, v interface{}) (exists bool, e
 func (c *cacheHelper) MarshalAndSet(key string, ttl int, v interface{}) error {
 	cachedBytes, err := json.Marshal(v)
 	if err != nil {
-		log.Printf("[CACHE-ERROR] unable to cache data %s : %s", key, err.Error())
+		log.Printf("[CACHE-ERROR] unable to cache data %s : %s\n", key, err.Error())
 	} else {
 		err = c.Set(key, cachedBytes, ttl)
 		if err != nil {
-			log.Printf("[CACHE-ERROR] unable to cache data %s : %s", key, err.Error())
+			log.Printf("[CACHE-ERROR] unable to cache data %s : %s\n", key, err.Error())
 		}
 	}
 
