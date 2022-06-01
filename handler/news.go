@@ -21,7 +21,6 @@ func (h *handler) GetNewsHandler(w http.ResponseWriter, r *http.Request) {
 
 	var resp interface{}
 	var topicSerialsArr []string
-	var err error
 
 	queries := mux.Vars(r)
 	status := strings.TrimSpace(queries["status"])
