@@ -31,6 +31,20 @@ func (h *handler) GetTagsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	cacheKey := generateTagsCacheKey(pageInt, sizeInt)
+
+	// Check cache
+	cacheResult, err := h.cacheHelper.Get(cacheKey)
+	if err != nil {
+		log.Println(err.Error())
+	}
+
+	if cacheResult != nil {
+		log.Println("cache hit")
+		w.Write(cacheResult)
+		return
+	}
+
 	resTags, err := h.tagService.GetTags(context.Background(), pageInt, sizeInt)
 	if err != nil {
 		log.Println(err.Error())
@@ -46,6 +60,12 @@ func (h *handler) GetTagsHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	}
+
+	// Set cache
+	err = h.cacheHelper.Set(cacheKey, payload, NewsTTL)
+	if err != nil {
+		log.Println(err.Error())
 	}
 
 	w.WriteHeader(http.StatusOK)

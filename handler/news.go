@@ -84,6 +84,7 @@ func (h *handler) GetNewsHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err.Error())
 	}
 
+	w.WriteHeader(http.StatusOK)
 	w.Write(payload)
 }
 

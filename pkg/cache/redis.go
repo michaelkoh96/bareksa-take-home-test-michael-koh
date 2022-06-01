@@ -16,7 +16,7 @@ func CreatePool(cfg config.Config) *redis.Pool {
 		Dial: func() (redis.Conn, error) {
 			conn, err := redis.Dial(cfg.RedisNetwork, cfg.RedisPort)
 			if err != nil {
-				log.Printf("ERROR: fail initializing the redis pool: %s", err.Error())
+				log.Printf("error while creating redis pool : %s", err.Error())
 				os.Exit(1)
 			}
 			return conn, err

@@ -8,7 +8,7 @@ import (
 
 var (
 	newsKeyFormat = "%s-%s"
-	tagKeysFormat = "%s-%s"
+	tagKeysFormat = "%d-%d"
 )
 
 func generateNewsCacheKey(status string, topicSerials []string) string {
@@ -16,6 +16,6 @@ func generateNewsCacheKey(status string, topicSerials []string) string {
 	return fmt.Sprintf(newsKeyFormat, status, strings.Join(topicSerials, "-"))
 }
 
-func generateTagsCacheKey(page, size int) {
-
+func generateTagsCacheKey(page, size int) string {
+	return fmt.Sprintf(tagKeysFormat, page, size)
 }
