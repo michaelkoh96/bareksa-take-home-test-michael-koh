@@ -16,6 +16,7 @@ services:
     volumes:
       - my-db:/var/lib/mysql
   cache:
+    platform: linux/x86_64
     image: redis:6.2-alpine
     restart: always
     ports:
