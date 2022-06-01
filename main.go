@@ -6,6 +6,7 @@ import (
 	serviceTag "bareksa-take-home-test-michael-koh/core/service/tag"
 	serviceTopic "bareksa-take-home-test-michael-koh/core/service/topic"
 	"bareksa-take-home-test-michael-koh/handler"
+	"bareksa-take-home-test-michael-koh/pkg/cache"
 	repoNews "bareksa-take-home-test-michael-koh/repository/news"
 	repoTag "bareksa-take-home-test-michael-koh/repository/tag"
 	repoTopic "bareksa-take-home-test-michael-koh/repository/topic"
@@ -31,6 +32,8 @@ func main() {
 	}
 
 	// init redis cache
+	redisPool := cache.CreatePool(cfg)
+	cacheHelper := cache.NewCacheHelper(redisPool)
 
 	// init repo
 	newsRepo := repoNews.NewRepository(db)
@@ -43,7 +46,7 @@ func main() {
 	tagService := serviceTag.NewService(tagRepo)
 
 	// init handler
-	bareksaNewsHandler := handler.NewBareksaNewsHandler(newsService, topicService, tagService)
+	bareksaNewsHandler := handler.NewBareksaNewsHandler(newsService, topicService, tagService, cacheHelper)
 
 	// setup server and register route
 	route := mux.NewRouter()

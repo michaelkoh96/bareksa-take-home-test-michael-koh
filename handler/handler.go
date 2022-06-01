@@ -4,6 +4,7 @@ import (
 	newsService "bareksa-take-home-test-michael-koh/core/service/news"
 	tagService "bareksa-take-home-test-michael-koh/core/service/tag"
 	topicService "bareksa-take-home-test-michael-koh/core/service/topic"
+	"bareksa-take-home-test-michael-koh/pkg/cache"
 	"net/http"
 )
 
@@ -26,13 +27,15 @@ type (
 		newsService  newsService.NewsService
 		topicService topicService.TopicService
 		tagService   tagService.TagsService
+		cacheHelper  cache.CacheHelper
 	}
 )
 
-func NewBareksaNewsHandler(newsService newsService.NewsService, topicService topicService.TopicService, tagService tagService.TagsService) Handler {
+func NewBareksaNewsHandler(newsService newsService.NewsService, topicService topicService.TopicService, tagService tagService.TagsService, cachehelper cache.CacheHelper) Handler {
 	return &handler{
 		newsService:  newsService,
 		topicService: topicService,
 		tagService:   tagService,
+		cacheHelper:  cachehelper,
 	}
 }

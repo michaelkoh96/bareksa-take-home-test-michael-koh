@@ -12,11 +12,16 @@ import (
 	"github.com/gorilla/mux"
 )
 
+var (
+	NewsTTL = (60 * 24)
+)
+
 func (h *handler) GetNewsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var resp interface{}
 	var topicSerialsArr []string
+	var err error
 
 	queries := mux.Vars(r)
 	status := strings.TrimSpace(queries["status"])
@@ -28,9 +33,22 @@ func (h *handler) GetNewsHandler(w http.ResponseWriter, r *http.Request) {
 		topicSerialsArr = strings.Split(topicSerials, ",")
 	}
 
+	cacheKey := generateNewsCacheKey(status, topicSerialsArr)
+
+	// Check cache
+	cacheResult, err := h.cacheHelper.Get(cacheKey)
+	if err != nil {
+		log.Println(err.Error())
+	}
+
+	if cacheResult != nil {
+		log.Println("cache hit")
+		w.Write(cacheResult)
+		return
+	}
+
 	// Get Topics
 	var topics []entity.Topic
-	var err error
 	if len(topicSerialsArr) > 0 {
 		topics, err = h.topicService.GetTopicsBySerials(context.Background(), topicSerialsArr)
 		if err != nil {
@@ -59,6 +77,12 @@ func (h *handler) GetNewsHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	}
+
+	// Set cache
+	err = h.cacheHelper.Set(cacheKey, payload, NewsTTL)
+	if err != nil {
+		log.Println(err.Error())
 	}
 
 	w.Write(payload)

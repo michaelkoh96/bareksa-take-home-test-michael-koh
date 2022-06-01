@@ -19,6 +19,12 @@ type Config struct {
 	MySQLPassword     string `envconfig:"MYSQL_PASSWORD" default:"password"`
 	MySQLDatabaseName string `envconfig:"MYSQL_DATABASE_NAME" default:"bareksa_news"`
 	MySQLDSNFormat    string `envconfig:"MYSQL_DSN_FORMAT" default:"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local"`
+
+	// Redis
+	RedisPort                string `envconfig:"REDIS_PORT" default:":6379"`
+	RedisNetwork             string `envconfig:"REDIS_NETWORK" default:"tcp"`
+	RedisMaxIdleConnection   int    `envconfig:"REDIS_MAX_IDLE" default:"50"`
+	RedisMaxActiveConnection int    `envconfig:"REDIS_MAX_ACTIVE" default:"10000"`
 }
 
 func Get() Config {
