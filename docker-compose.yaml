@@ -1,7 +1,7 @@
-version: '3.3'
+version: '3.7'
 services:
   db:
-    platform: linux/x86_64
+    platform: linux/x86_64 #change platform to linux/amd64 if you are using M1 macbook with arm arch
     image: mysql:5.7
     restart: always
     environment:
@@ -16,7 +16,7 @@ services:
     volumes:
       - my-db:/var/lib/mysql
   cache:
-    platform: linux/x86_64
+    platform: linux/x86_64 #change platform to linux/amd64 if you are using M1 macbook with arm arch
     image: redis:6.2-alpine
     restart: always
     ports:
